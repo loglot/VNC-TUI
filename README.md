@@ -12,9 +12,9 @@ git clone https://github.com/loglot/VNC-TUI.git
 this will prompt you to make the config folder, and will also prompt global installation if it isn't, if you do the global installation, you can run `vnctui` to open it
 
 # Features
-Starting and Stopping VNC Servers
-creating multiple startup profiles (managers)
-easily switching between startup profiles
+- Starting and Stopping VNC Servers
+- creating multiple startup profiles (managers)
+- easily switching between startup profiles
 
 # Example
 say you have i3wm and openbox installed on your system, and you want to start a vnc server with one of them
@@ -30,3 +30,5 @@ Select: v sta           # start after approval
 Select: v sta y         # start without approval
 ```
 
+# End
+this is my first time making any form of public open source non game, so contributions are welcome!
