@@ -154,22 +154,22 @@ function download(){
 		echo "sudo rm $0"
 		sudo rm $0
 		echo
-		echo "sudo cp ./VNC-TUI/vnc.sh $0"
-		sudo cp ./VNC-TUI/vnc.sh $0
+		echo "sudo cp ./VNC-TUI/built/vnc.sh $0"
+		sudo cp ./VNC-TUI/built/vnc.sh $0
 		echo
 	else
 		echo "rm $0"
 		rm $0
 		echo
-		echo "cp ./VNC-TUI/vnc.sh $0"
-		cp ./VNC-TUI/vnc.sh $0
+		echo "cp ./VNC-TUI/built/vnc.sh $0"
+		cp ./VNC-TUI/built/vnc.sh $0
 		echo
 		if [ -e /usr/bin/vnctui ]; then
 			echo "sudo rm /usr/bin/vnctui"
 			sudo rm /usr/bin/vnctui
 			echo
-			echo "sudo cp ./VNC-TUI/vnc.sh /usr/bin/vnctui"
-			sudo cp ./VNC-TUI/vnc.sh /usr/bin/vnctui
+			echo "sudo cp ./VNC-TUI/built/vnc.sh /usr/bin/vnctui"
+			sudo cp ./VNC-TUI/built/vnc.sh /usr/bin/vnctui
 			echo
 		else
 			echo "not installing globaly, as it isn't currently installed globally"
