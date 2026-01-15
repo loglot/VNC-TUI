@@ -1,0 +1,52 @@
+
+
+
+function misc(){
+	input=""
+	input2=""
+	if [ -n "$manin" ]; then
+		IFS=" " read -r input input2 <<< "$manin"
+	fi
+	if [ -z "$manin" ]; then
+
+		header
+		echo "All The Other Stuff;"
+		echo
+		echo "[I] Reinstall vnctui"
+		echo "[U] Uninstall vnctui"
+		echo "[UP] Update vnctui"
+		echo "[CON] ReMake Config Skelaton"
+		echo "[X] Return To Main Window"
+		echo
+		IFS=" " read -p "Select: " input input2
+	fi
+
+	if [ "$input" = "I" -o "$input" = "i" ]; then
+		install
+	elif [ "$input" = "U" -o "$input" = "u" ]; then
+		echo
+		echo "sudo rm /usr/bin/vnctui"
+		sudo rm /usr/bin/vnctui
+		echo done
+		echo
+		echo VNC TUI Is Uninstalled
+		if [ "$0" = "/usr/bin/vnctui" ]; then
+			echo If You Want To Reinstall VNC TUI, Then You Have To Run It From A Script
+		else
+			echo "If You Want To Reinstall VNC TUI, Run [I] $0"
+		fi
+		echo
+		read -p ": "
+	elif [ "$input" = "CON" -o "$input" = "con" ]; then
+		makeConf
+	elif [ "$input" = "UP" -o "$input" = "up" ]; then
+		download
+	elif [ "$input" = "X" -o "$input" = "x" ]; then
+		echo "freedom"
+		return
+	fi
+	if [ -z "$manin" ]; then
+		misc
+	fi
+
+}

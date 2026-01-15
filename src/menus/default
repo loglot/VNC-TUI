@@ -1,0 +1,48 @@
+
+
+
+function default(){
+	clear
+	header
+	input=""
+	input2=""
+	input3=""
+	echo "Welcome To The VNC TUI;"
+	echo 
+	echo "[V] VNC Handler"
+	echo "[M] Manager Handler"
+	echo "[MISC] Miscalanious"
+	echo "[X] Exit"
+
+	if [ -z "$manager" ]; then
+		echo 
+		echo "Warning: No Manager Selected"
+		echo "   Go To The Manager Handler To Resolve" 
+	fi
+	echo
+	IFS=" " read -p "Select: " input input2 input3
+	if [ "$input" = "V" -o "$input" = "v" ]; then
+		if [ -n "$input2" ]; then
+			manin="$input2 $input3"
+		fi
+		vnch
+		manin=""
+	elif [ "$input" = "M" -o "$input" = "m" ]; then
+		if [ -n "$input2" ]; then
+			manin="$input2 $input3"
+		fi
+		managers
+		manin=""
+	elif [ "$input" = "MISC" -o "$input" = "misc" ]; then
+		if [ -n "$input2" ]; then
+			manin="$input2 $input3"
+		fi
+		misc
+		manin=""
+	elif [ "$input" = "X" -o "$input" = "x" ]; then
+		echo
+		return
+	fi
+	default
+
+}

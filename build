@@ -1,0 +1,31 @@
+bp=built/vnc.sh
+vta(){ #vnc tui add
+    echo "$1"
+    cat $1 >> $bp
+}
+vti(){ #vnc tui init
+    echo "$1"
+    cat $1 > $bp
+}
+vtm(){ #vnc tui chmod
+    echo "+x $1"
+    chmod +x $1
+
+}
+
+vti src/menus/default
+vta src/menus/misc
+vta src/menus/vnc
+vta src/menus/managers
+echo
+vta src/utilities/config
+vta src/utilities/download
+vta src/utilities/header
+vta src/utilities/installation
+vta src/utilities/manedit
+vta src/utilities/startvnc
+echo
+vta src/run
+echo
+vtm $bp
+echo

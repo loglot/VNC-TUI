@@ -1,0 +1,46 @@
+
+
+
+function create(){
+	echo
+	if [ -z $name ]; then
+		read -p "Name Of Manager: " name
+	fi
+	cp ~/.config/vnctui/default ~/.config/vnctui/man/$name
+	nano ~/.config/vnctui/man/$name
+	list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ')
+}
+function clone(){
+	echo
+	if [ -z $name ]; then
+		read -p "Name Of Manager: " name
+	fi
+	cp ~/.vnc/xstartup ~/.config/vnctui/man/$name
+	list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ')
+	manager=$name
+	echo "$manager" > ~/.config/vnctui/current
+}
+function remove(){
+	echo
+	if [ -z $name ]; then
+		read -p "Name Of Manager: " name
+	fi
+	rm ~/.config/vnctui/man/$name
+	list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ')
+}
+
+function move(){
+	rm ~/.vnc/xstartup
+	cp ~/.config/vnctui/man/$one ~/.vnc/xstartup
+	manager=$one
+	echo "$manager" > ~/.config/vnctui/current
+}
+function prompt(){
+	echo
+	
+	if [ -z $name ]; then
+		read -p "Name Of Manager: " name
+	fi
+	one=$name
+	move
+}

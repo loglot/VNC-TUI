@@ -1,0 +1,78 @@
+
+
+
+function managers(){
+	input=""
+	input2=""
+	if [ -n "$manin" ]; then
+		IFS=" " read -r input input2 <<< "$manin"
+	fi
+	if [ -z "$manin" ]; then
+
+		clear
+		header
+		echo "Manager Handler;"
+		echo
+		echo "[CH] Change VNC Manager"
+		echo "[R] Read VNC Manager"
+		echo "[DEL] Delete VNC Manager"
+		echo "[C] Create VNC Manager"
+		echo "[MOD] Modify Current VNC Manager"
+		echo "[MODDEF] Modify Default VNC Manager"
+		echo "[CL] Clone Current VNC Manager"
+		echo "[X] Return To Main Window"
+		if [ -z "$list" ]; then
+			echo 
+			echo "Warning: No Manager Found"
+			echo "   Please Create A VNC Manager With [C]" 
+		elif [ -z "$manager" ]; then
+			echo 
+			echo "Warning: No Manager Selected"
+			echo "   Please Change To A VNC Manager With [CH]" 
+		fi
+		if [ -n "$diffy" ]; then
+			echo 
+			echo "Info: ~/.vnc/xstartup doesn't match current manager"
+			echo "   you can resolve by changing the manager [CH]"
+			echo "   or by cloning the current setup [CL]" 
+		fi
+		echo
+		IFS=" " read -p "Select: " input input2
+	fi
+
+	if [ "$input" = "CH" -o "$input" = "ch" ]; then
+		name="$input2"
+		prompt
+		name=""
+	elif [ "$input" = "r" -o "$input" = "R" ]; then
+		echo
+		cat ~/.vnc/xstartup
+		echo
+		read -p ":"
+	elif [ "$input" = "MODDEF" -o "$input" = "moddef" ]; then
+		nano ~/.config/vnctui/default
+	elif [ "$input" = "MOD" -o "$input" = "mod" ]; then
+		nano ~/.config/vnctui/man/$manager
+		rm ~/.vnc/xstartup
+		cp ~/.config/vnctui/man/$manager ~/.vnc/xstartup
+	elif [ "$input" = "C" -o "$input" = "c" ]; then
+		name="$input2"
+		create
+		name=""
+	elif [ "$input" = "CL" -o "$input" = "cl" ]; then
+		name="$input2"
+		clone
+		name=""
+	elif [ "$input" = "DEL" -o "$input" = "del" ]; then
+		name="$input2"
+		remove
+		name=""
+	elif [ "$input" = "X" -o "$input" = "x" ]; then
+		echo "freedom"
+		return
+	fi
+	if [ -z "$manin" ]; then
+		managers
+	fi
+
+}

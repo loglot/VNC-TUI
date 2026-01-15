@@ -1,0 +1,44 @@
+
+
+
+function vnch(){
+	input=""
+	input2=""
+	if [ -n "$manin" ]; then
+		IFS=" " read -r input input2 <<< "$manin"
+	fi
+	clear
+	header
+	echo "VNC Handler;"
+	echo
+	echo "[STA] Start VNC"
+	echo "[STO] Stop VNC"
+	echo "[RE] Restart VNC"
+	echo "[X] Return To Main Window"
+	echo
+	if [ -z "$manin" ]; then
+		IFS=" " read -p "Select: " input input2
+	fi
+
+	if [ "$input" = "STA" -o "$input" = "sta" ]; then
+		by="$input2"
+		check
+	elif [ "$input" = "STO" -o "$input" = "sto" ]; then
+		vncserver -kill :1
+		echo
+		by=""
+	elif [ "$input" = "RE" -o "$input" = "re" ]; then
+		by="$input2"
+		vncserver -kill :1
+		check
+		echo
+		by=""
+	elif [ "$input" = "X" -o "$input" = "x" ]; then
+		echo "freedom"
+		return
+	fi
+	if [ -z "$manin" ]; then
+		vnch
+	fi
+
+}

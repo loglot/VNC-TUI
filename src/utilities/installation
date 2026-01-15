@@ -1,0 +1,25 @@
+
+
+
+function install(){
+	echo
+	echo Command To Be Run:
+	echo sudo cp $0 /usr/bin/vnctui
+	echo
+	echo You Could Also Just Run The Above Command Yourself
+	echo "[I] Stops This From Showing On Startup"
+	echo
+	read -p "[Y/n/i] : " install
+	echo
+	if [ "$install" = "y" -o "$install" = "Y" ]; then
+		echo "Installing;"
+		echo "sudo cp $0 /usr/bin/vnctui"
+		sudo cp $0 /usr/bin/vnctui
+		echo "Installed!"
+		echo "Can Now Be Run With 'vnctui' anywhere"
+	else
+		echo
+	fi
+	echo
+	read -p ": "
+}

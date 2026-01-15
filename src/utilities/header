@@ -1,0 +1,18 @@
+
+
+
+function header(){
+	diffy=$(diff ~/.vnc/xstartup ~/.config/vnctui/man/$manager)
+	clear
+	echo "---------------------------------------------"
+	echo
+	if [ -z "$diffy" ]; then
+		echo "Current Manager: $manager"
+	else
+		echo "Current Manager: $manager ???"
+	fi
+	echo "Existing Managers: $list"
+	echo
+	echo "---------------------------------------------"
+	echo
+}

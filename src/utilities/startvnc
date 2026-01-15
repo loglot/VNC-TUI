@@ -1,0 +1,28 @@
+
+
+function check(){
+	clear
+	header
+	echo "XSTARTUP;"
+	echo
+	cat ~/.vnc/xstartup
+	echo
+	if [ -z "$by" ]; then
+		read -p "correct? [y/N] : " test
+	else
+		test="$by"
+	fi
+	echo
+	if [ "$test" = "y" ]; then
+		echo "approved to start"
+		vncserver
+		echo "or connect to http://s.loglot.co.in:6082/vnc.html on a browser"
+		echo
+	elif [ "$test" = "n" ]; then
+		echo "denied start"
+	else
+		echo "try again"
+		check
+	fi
+
+}

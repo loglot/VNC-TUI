@@ -1,0 +1,34 @@
+
+
+
+clear
+if [ -d ~/.config/vnctui/ ]; then	
+	echo 
+else
+	echo "Warning; Config Folder Was Not Found!"
+	makeConf
+fi
+if [ -e /usr/bin/vnctui ]; then
+	echo 
+else
+	echo 
+	echo Not Installed Globally, Do You Want To Install It?
+	install
+
+fi
+
+list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ') 
+manager=$(cat ~/.config/vnctui/current)
+clear
+if [ "$1" = "start" ]; then
+	if [ -n "$2" ]; then
+		one=$2
+		move
+	else
+		prompt
+	fi
+
+	check
+else
+	default
+fi

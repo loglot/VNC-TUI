@@ -1,0 +1,34 @@
+
+
+function makeConf(){
+	read -p "Make Skeleton? [Y/n] : " skelmake
+	if [ "$skelmake" = "y" -o "$skelmake" = "Y" ]; then
+		rm -r ~/.config/vnctui/
+		echo
+		echo "Making Base ['.config/vnctui'] Folder"
+		mkdir ~/.config/vnctui/
+		echo "Making ['current'] file"
+		touch ~/.config/vnctui/current
+		echo "Making ['default'] file"
+		printf "#!/bin/bash\n# Start Command For Manager\n" > ~/.config/vnctui/default
+		echo "Making Manager ['man'] folder"
+		mkdir ~/.config/vnctui/man
+		echo
+		echo "FileTree;"
+		echo ".config/"
+		echo "    vnctui/"
+		echo "        current"
+		echo "        default"
+		echo "        man/"
+		echo
+		
+		echo Done
+
+	else
+		echo "Warning, Continuing in Broken State"
+	fi
+	echo
+	read -p ": "
+list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ') 
+manager=$(cat ~/.config/vnctui/current)
+}

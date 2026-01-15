@@ -1,73 +1,147 @@
 
-function move(){
-	rm ~/.vnc/xstartup
-	cp ~/.config/vnctui/man/$one ~/.vnc/xstartup
-	manager=$one
-	echo "$manager" > ~/.config/vnctui/current
-}
-function prompt(){
-	echo
-	
-	if [ -z $name ]; then
-		read -p "Name Of Manager: " name
-	fi
-	one=$name
-	move
-}
 
-function check(){
+
+function default(){
 	clear
 	header
-	echo "XSTARTUP;"
-	echo
-	cat ~/.vnc/xstartup
-	echo
-	if [ -z "$by" ]; then
-		read -p "correct? [y/N] : " test
-	else
-		test="$by"
+	input=""
+	input2=""
+	input3=""
+	echo "Welcome To The VNC TUI;"
+	echo 
+	echo "[V] VNC Handler"
+	echo "[M] Manager Handler"
+	echo "[MISC] Miscalanious"
+	echo "[X] Exit"
+
+	if [ -z "$manager" ]; then
+		echo 
+		echo "Warning: No Manager Selected"
+		echo "   Go To The Manager Handler To Resolve" 
 	fi
 	echo
-	if [ "$test" = "y" ]; then
-		echo "approved to start"
-		vncserver
-		echo "or connect to http://s.loglot.co.in:6082/vnc.html on a browser"
+	IFS=" " read -p "Select: " input input2 input3
+	if [ "$input" = "V" -o "$input" = "v" ]; then
+		if [ -n "$input2" ]; then
+			manin="$input2 $input3"
+		fi
+		vnch
+		manin=""
+	elif [ "$input" = "M" -o "$input" = "m" ]; then
+		if [ -n "$input2" ]; then
+			manin="$input2 $input3"
+		fi
+		managers
+		manin=""
+	elif [ "$input" = "MISC" -o "$input" = "misc" ]; then
+		if [ -n "$input2" ]; then
+			manin="$input2 $input3"
+		fi
+		misc
+		manin=""
+	elif [ "$input" = "X" -o "$input" = "x" ]; then
 		echo
-	elif [ "$test" = "n" ]; then
-		echo "denied start"
-	else
-		echo "try again"
-		check
+		return
+	fi
+	default
+
+}
+
+
+function misc(){
+	input=""
+	input2=""
+	if [ -n "$manin" ]; then
+		IFS=" " read -r input input2 <<< "$manin"
+	fi
+	if [ -z "$manin" ]; then
+
+		header
+		echo "All The Other Stuff;"
+		echo
+		echo "[I] Reinstall vnctui"
+		echo "[U] Uninstall vnctui"
+		echo "[UP] Update vnctui"
+		echo "[CON] ReMake Config Skelaton"
+		echo "[X] Return To Main Window"
+		echo
+		IFS=" " read -p "Select: " input input2
+	fi
+
+	if [ "$input" = "I" -o "$input" = "i" ]; then
+		install
+	elif [ "$input" = "U" -o "$input" = "u" ]; then
+		echo
+		echo "sudo rm /usr/bin/vnctui"
+		sudo rm /usr/bin/vnctui
+		echo done
+		echo
+		echo VNC TUI Is Uninstalled
+		if [ "$0" = "/usr/bin/vnctui" ]; then
+			echo If You Want To Reinstall VNC TUI, Then You Have To Run It From A Script
+		else
+			echo "If You Want To Reinstall VNC TUI, Run [I] $0"
+		fi
+		echo
+		read -p ": "
+	elif [ "$input" = "CON" -o "$input" = "con" ]; then
+		makeConf
+	elif [ "$input" = "UP" -o "$input" = "up" ]; then
+		download
+	elif [ "$input" = "X" -o "$input" = "x" ]; then
+		echo "freedom"
+		return
+	fi
+	if [ -z "$manin" ]; then
+		misc
 	fi
 
 }
-function create(){
-	echo
-	if [ -z $name ]; then
-		read -p "Name Of Manager: " name
+
+
+function vnch(){
+	input=""
+	input2=""
+	if [ -n "$manin" ]; then
+		IFS=" " read -r input input2 <<< "$manin"
 	fi
-	cp ~/.config/vnctui/default ~/.config/vnctui/man/$name
-	nano ~/.config/vnctui/man/$name
-	list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ')
-}
-function clone(){
+	clear
+	header
+	echo "VNC Handler;"
 	echo
-	if [ -z $name ]; then
-		read -p "Name Of Manager: " name
-	fi
-	cp ~/.vnc/xstartup ~/.config/vnctui/man/$name
-	list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ')
-	manager=$name
-	echo "$manager" > ~/.config/vnctui/current
-}
-function remove(){
+	echo "[STA] Start VNC"
+	echo "[STO] Stop VNC"
+	echo "[RE] Restart VNC"
+	echo "[X] Return To Main Window"
 	echo
-	if [ -z $name ]; then
-		read -p "Name Of Manager: " name
+	if [ -z "$manin" ]; then
+		IFS=" " read -p "Select: " input input2
 	fi
-	rm ~/.config/vnctui/man/$name
-	list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ')
+
+	if [ "$input" = "STA" -o "$input" = "sta" ]; then
+		by="$input2"
+		check
+	elif [ "$input" = "STO" -o "$input" = "sto" ]; then
+		vncserver -kill :1
+		echo
+		by=""
+	elif [ "$input" = "RE" -o "$input" = "re" ]; then
+		by="$input2"
+		vncserver -kill :1
+		check
+		echo
+		by=""
+	elif [ "$input" = "X" -o "$input" = "x" ]; then
+		echo "freedom"
+		return
+	fi
+	if [ -z "$manin" ]; then
+		vnch
+	fi
+
 }
+
+
 function managers(){
 	input=""
 	input2=""
@@ -143,6 +217,41 @@ function managers(){
 	fi
 
 }
+
+function makeConf(){
+	read -p "Make Skeleton? [Y/n] : " skelmake
+	if [ "$skelmake" = "y" -o "$skelmake" = "Y" ]; then
+		rm -r ~/.config/vnctui/
+		echo
+		echo "Making Base ['.config/vnctui'] Folder"
+		mkdir ~/.config/vnctui/
+		echo "Making ['current'] file"
+		touch ~/.config/vnctui/current
+		echo "Making ['default'] file"
+		printf "#!/bin/bash\n# Start Command For Manager\n" > ~/.config/vnctui/default
+		echo "Making Manager ['man'] folder"
+		mkdir ~/.config/vnctui/man
+		echo
+		echo "FileTree;"
+		echo ".config/"
+		echo "    vnctui/"
+		echo "        current"
+		echo "        default"
+		echo "        man/"
+		echo
+		
+		echo Done
+
+	else
+		echo "Warning, Continuing in Broken State"
+	fi
+	echo
+	read -p ": "
+list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ') 
+manager=$(cat ~/.config/vnctui/current)
+}
+
+
 function download(){
 	echo
 	echo
@@ -184,55 +293,9 @@ function download(){
 	echo
 	read -p ": "
 }
-function misc(){
-	input=""
-	input2=""
-	if [ -n "$manin" ]; then
-		IFS=" " read -r input input2 <<< "$manin"
-	fi
-	if [ -z "$manin" ]; then
 
-		header
-		echo "All The Other Stuff;"
-		echo
-		echo "[I] Reinstall vnctui"
-		echo "[U] Uninstall vnctui"
-		echo "[UP] Update vnctui"
-		echo "[CON] ReMake Config Skelaton"
-		echo "[X] Return To Main Window"
-		echo
-		IFS=" " read -p "Select: " input input2
-	fi
 
-	if [ "$input" = "I" -o "$input" = "i" ]; then
-		install
-	elif [ "$input" = "U" -o "$input" = "u" ]; then
-		echo
-		echo "sudo rm /usr/bin/vnctui"
-		sudo rm /usr/bin/vnctui
-		echo done
-		echo
-		echo VNC TUI Is Uninstalled
-		if [ "$0" = "/usr/bin/vnctui" ]; then
-			echo If You Want To Reinstall VNC TUI, Then You Have To Run It From A Script
-		else
-			echo "If You Want To Reinstall VNC TUI, Run [I] $0"
-		fi
-		echo
-		read -p ": "
-	elif [ "$input" = "CON" -o "$input" = "con" ]; then
-		makeConf
-	elif [ "$input" = "UP" -o "$input" = "up" ]; then
-		download
-	elif [ "$input" = "X" -o "$input" = "x" ]; then
-		echo "freedom"
-		return
-	fi
-	if [ -z "$manin" ]; then
-		misc
-	fi
 
-}
 function header(){
 	diffy=$(diff ~/.vnc/xstartup ~/.config/vnctui/man/$manager)
 	clear
@@ -249,125 +312,7 @@ function header(){
 	echo
 }
 
-function vnch(){
-	input=""
-	input2=""
-	if [ -n "$manin" ]; then
-		IFS=" " read -r input input2 <<< "$manin"
-	fi
-	clear
-	header
-	echo "VNC Handler;"
-	echo
-	echo "[STA] Start VNC"
-	echo "[STO] Stop VNC"
-	echo "[RE] Restart VNC"
-	echo "[X] Return To Main Window"
-	echo
-	if [ -z "$manin" ]; then
-		IFS=" " read -p "Select: " input input2
-	fi
 
-	if [ "$input" = "STA" -o "$input" = "sta" ]; then
-		by="$input2"
-		check
-	elif [ "$input" = "STO" -o "$input" = "sto" ]; then
-		vncserver -kill :1
-		echo
-		by=""
-	elif [ "$input" = "RE" -o "$input" = "re" ]; then
-		by="$input2"
-		vncserver -kill :1
-		check
-		echo
-		by=""
-	elif [ "$input" = "X" -o "$input" = "x" ]; then
-		echo "freedom"
-		return
-	fi
-	if [ -z "$manin" ]; then
-		vnch
-	fi
-
-}
-
-function default(){
-	clear
-	header
-	input=""
-	input2=""
-	input3=""
-	echo "Welcome To The VNC TUI;"
-	echo 
-	echo "[V] VNC Handler"
-	echo "[M] Manager Handler"
-	echo "[MISC] Miscalanious"
-	echo "[X] Exit"
-
-	if [ -z "$manager" ]; then
-		echo 
-		echo "Warning: No Manager Selected"
-		echo "   Go To The Manager Handler To Resolve" 
-	fi
-	echo
-	IFS=" " read -p "Select: " input input2 input3
-	if [ "$input" = "V" -o "$input" = "v" ]; then
-		if [ -n "$input2" ]; then
-			manin="$input2 $input3"
-		fi
-		vnch
-		manin=""
-	elif [ "$input" = "M" -o "$input" = "m" ]; then
-		if [ -n "$input2" ]; then
-			manin="$input2 $input3"
-		fi
-		managers
-		manin=""
-	elif [ "$input" = "MISC" -o "$input" = "misc" ]; then
-		if [ -n "$input2" ]; then
-			manin="$input2 $input3"
-		fi
-		misc
-		manin=""
-	elif [ "$input" = "X" -o "$input" = "x" ]; then
-		echo
-		return
-	fi
-	default
-
-}
-function makeConf(){
-	read -p "Make Skeleton? [Y/n] : " skelmake
-	if [ "$skelmake" = "y" -o "$skelmake" = "Y" ]; then
-		rm -r ~/.config/vnctui/
-		echo
-		echo "Making Base ['.config/vnctui'] Folder"
-		mkdir ~/.config/vnctui/
-		echo "Making ['current'] file"
-		touch ~/.config/vnctui/current
-		echo "Making ['default'] file"
-		printf "#!/bin/bash\n# Start Command For Manager\n" > ~/.config/vnctui/default
-		echo "Making Manager ['man'] folder"
-		mkdir ~/.config/vnctui/man
-		echo
-		echo "FileTree;"
-		echo ".config/"
-		echo "    vnctui/"
-		echo "        current"
-		echo "        default"
-		echo "        man/"
-		echo
-		
-		echo Done
-
-	else
-		echo "Warning, Continuing in Broken State"
-	fi
-	echo
-	read -p ": "
-list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ') 
-manager=$(cat ~/.config/vnctui/current)
-}
 function install(){
 	echo
 	echo Command To Be Run:
@@ -389,6 +334,78 @@ function install(){
 	fi
 	echo
 	read -p ": "
+}
+
+
+function create(){
+	echo
+	if [ -z $name ]; then
+		read -p "Name Of Manager: " name
+	fi
+	cp ~/.config/vnctui/default ~/.config/vnctui/man/$name
+	nano ~/.config/vnctui/man/$name
+	list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ')
+}
+function clone(){
+	echo
+	if [ -z $name ]; then
+		read -p "Name Of Manager: " name
+	fi
+	cp ~/.vnc/xstartup ~/.config/vnctui/man/$name
+	list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ')
+	manager=$name
+	echo "$manager" > ~/.config/vnctui/current
+}
+function remove(){
+	echo
+	if [ -z $name ]; then
+		read -p "Name Of Manager: " name
+	fi
+	rm ~/.config/vnctui/man/$name
+	list=$(ls ~/.config/vnctui/man|tr -t '\n' ', ')
+}
+
+function move(){
+	rm ~/.vnc/xstartup
+	cp ~/.config/vnctui/man/$one ~/.vnc/xstartup
+	manager=$one
+	echo "$manager" > ~/.config/vnctui/current
+}
+function prompt(){
+	echo
+	
+	if [ -z $name ]; then
+		read -p "Name Of Manager: " name
+	fi
+	one=$name
+	move
+}
+
+function check(){
+	clear
+	header
+	echo "XSTARTUP;"
+	echo
+	cat ~/.vnc/xstartup
+	echo
+	if [ -z "$by" ]; then
+		read -p "correct? [y/N] : " test
+	else
+		test="$by"
+	fi
+	echo
+	if [ "$test" = "y" ]; then
+		echo "approved to start"
+		vncserver
+		echo "or connect to http://s.loglot.co.in:6082/vnc.html on a browser"
+		echo
+	elif [ "$test" = "n" ]; then
+		echo "denied start"
+	else
+		echo "try again"
+		check
+	fi
+
 }
 
 
@@ -423,4 +440,3 @@ if [ "$1" = "start" ]; then
 else
 	default
 fi
-
