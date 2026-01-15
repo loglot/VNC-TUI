@@ -143,6 +143,47 @@ function managers(){
 	fi
 
 }
+function download(){
+	echo
+	echo
+	echo "git clone https://github.com/loglot/VNC-TUI.git"
+	echo
+	git clone https://github.com/loglot/VNC-TUI.git
+	echo
+	if [ "$0" = "/usr/bin/vnctui" ]; then
+		echo "sudo rm $0"
+		sudo rm $0
+		echo
+		echo "sudo cp ./VNC-TUI/vnc.sh $0"
+		sudo cp ./VNC-TUI/vnc.sh $0
+		echo
+	else
+		echo "rm $0"
+		rm $0
+		echo
+		echo "cp ./VNC-TUI/vnc.sh $0"
+		cp ./VNC-TUI/vnc.sh $0
+		echo
+		if [ -e /usr/bin/vnctui ]; then
+			echo "sudo rm /usr/bin/vnctui"
+			sudo rm /usr/bin/vnctui
+			echo
+			echo "sudo cp ./VNC-TUI/vnc.sh /usr/bin/vnctui"
+			sudo cp ./VNC-TUI/vnc.sh /usr/bin/vnctui
+			echo
+		else
+			echo "not installing globaly, as it isn't currently installed globally"
+			echo
+		fi
+	fi
+	echo "yes | rm -r VNC-TUI"
+	yes | rm -r VNC-TUI
+	echo
+	echo "done"
+	echo "restart $0 for changes to take effect"
+	echo
+	read -p ": "
+}
 function misc(){
 	input=""
 	input2=""
@@ -155,6 +196,7 @@ function misc(){
 		echo "All The Other Stuff;"
 		echo
 		echo "[INSTALL] Reinstall vnctui"
+		echo "[UPDATE] Update vnctui"
 		echo "[CONFIG] ReMake Config Skelaton"
 		echo "[X] Return To Main Window"
 		echo
@@ -165,6 +207,8 @@ function misc(){
 		install
 	elif [ "$input" = "CONFIG" -o "$input" = "config" ]; then
 		makeConf
+	elif [ "$input" = "UPDATE" -o "$input" = "update" ]; then
+		download
 	elif [ "$input" = "X" -o "$input" = "x" ]; then
 		echo "freedom"
 		return
@@ -312,7 +356,7 @@ manager=$(cat ~/.config/vnctui/current)
 function install(){
 	echo
 	echo Command To Be Run:
-	echo sudo cp ./vnc.sh /usr/bin/vnctui
+	echo sudo cp $0 /usr/bin/vnctui
 	echo
 	echo You Could Also Just Run The Above Command Yourself
 	echo "[I] Stops This From Showing On Startup"
@@ -320,10 +364,12 @@ function install(){
 	read -p "[Y/n/i] : " install
 	echo
 	if [ "$install" = "y" -o "$install" = "Y" ]; then
-		echo "Installing;"
-		echo "sudo cp ./vnc.sh /usr/bin/vnctui"
+		echo "Removing If Already Installed;"
+		echo "sudo rm /usr/bin/vnctui"
 		sudo rm /usr/bin/vnctui
-		sudo cp ./vnc.sh /usr/bin/vnctui
+		echo "Installing;"
+		echo "sudo cp $0 /usr/bin/vnctui"
+		sudo cp $0 /usr/bin/vnctui
 		echo "Installed!"
 		echo "Can Now Be Run With 'vnctui' anywhere"
 	else
