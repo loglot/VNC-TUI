@@ -7,7 +7,7 @@ this is made to be a decent tui for remote clients when you have multiple deskto
 run
 ```sh
 git clone https://github.com/loglot/VNC-TUI.git
-./VNC-TUI/vnc.sh
+./VNC-TUI/built/vnc.sh
 ```
 this will prompt you to make the config folder, and will also prompt global installation if it isn't, if you do the global installation, you can run `vnctui` to open it
 
@@ -32,3 +32,4 @@ Select: v sta y         # start without approval
 
 # End
 this is my first time making any form of public open source non game, so contributions are welcome!
+
