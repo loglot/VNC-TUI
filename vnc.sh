@@ -195,19 +195,34 @@ function misc(){
 		header
 		echo "All The Other Stuff;"
 		echo
-		echo "[INSTALL] Reinstall vnctui"
-		echo "[UPDATE] Update vnctui"
-		echo "[CONFIG] ReMake Config Skelaton"
+		echo "[I] Reinstall vnctui"
+		echo "[U] Uninstall vnctui"
+		echo "[UP] Update vnctui"
+		echo "[CON] ReMake Config Skelaton"
 		echo "[X] Return To Main Window"
 		echo
 		IFS=" " read -p "Select: " input input2
 	fi
 
-	if [ "$input" = "INSTALL" -o "$input" = "install" ]; then
+	if [ "$input" = "I" -o "$input" = "i" ]; then
 		install
-	elif [ "$input" = "CONFIG" -o "$input" = "config" ]; then
+	elif [ "$input" = "U" -o "$input" = "u" ]; then
+		echo
+		echo "sudo rm /usr/bin/vnctui"
+		sudo rm /usr/bin/vnctui
+		echo done
+		echo
+		echo VNC TUI Is Uninstalled
+		if [ "$0" = "/usr/bin/vnctui" ]; then
+			echo If You Want To Reinstall VNC TUI, Then You Have To Run It From A Script
+		else
+			echo "If You Want To Reinstall VNC TUI, Run [I] $0"
+		fi
+		echo
+		read -p ": "
+	elif [ "$input" = "CON" -o "$input" = "con" ]; then
 		makeConf
-	elif [ "$input" = "UPDATE" -o "$input" = "update" ]; then
+	elif [ "$input" = "UP" -o "$input" = "up" ]; then
 		download
 	elif [ "$input" = "X" -o "$input" = "x" ]; then
 		echo "freedom"
@@ -364,9 +379,6 @@ function install(){
 	read -p "[Y/n/i] : " install
 	echo
 	if [ "$install" = "y" -o "$install" = "Y" ]; then
-		echo "Removing If Already Installed;"
-		echo "sudo rm /usr/bin/vnctui"
-		sudo rm /usr/bin/vnctui
 		echo "Installing;"
 		echo "sudo cp $0 /usr/bin/vnctui"
 		sudo cp $0 /usr/bin/vnctui
