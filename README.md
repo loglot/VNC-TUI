@@ -37,6 +37,7 @@ Select: m ch openbox    # to change to openbox
 Select: m del i3        # to delete the i3 manager
 Select: v sta           # start after approval
 Select: v sta y         # start without approval
+Select: misc up         # update vnctui to sync with github
 ```
 
 # End
@@ -45,3 +46,4 @@ this is my first time making any form of public open source non game, so contrib
 # Post-End
 ## Why Did I Make This
 I Made this because i've been working on my server when i don't have access to my computer, and i really like tiling window managers, but for something i wanted to work on, i needed a stacking window manager, so i wanted a way to choose what wm i use when i start the vnc server, but i couldn't find anything like that, so i made my own
+
