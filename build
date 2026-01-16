@@ -21,7 +21,7 @@ vtbn(){ #vnc tui build number
 while getopts "csnh" opt; do
     case ${opt} in
     s) echo Building Stable Version
-        bp=built/vnc.sh
+        eval $(cat ./info/b.loc)
         echo
     ;;
     n) echo Not Building
@@ -44,8 +44,8 @@ done
 if [ "$nobuild" = "y" ]; then
     echo
 else
-    buildnum=$(($(cat ./build.number) + 1))
-    echo $buildnum > ./build.number
+    buildnum=$(($(cat ./info/build.number) + 1))
+    echo $buildnum > ./info/build.number
     vti 
     echo
     vta src/menus/default
