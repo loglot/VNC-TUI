@@ -33,3 +33,6 @@ Select: v sta y         # start without approval
 # End
 this is my first time making any form of public open source non game, so contributions are welcome!
 
+# Post-End
+## Why Did I Make This
+I Made this because i've been working on my server when i don't have access to my computer, and i really like tiling window managers, but for something i wanted to work on, i needed a stacking window manager, so i wanted a way to choose what wm i use when i start the vnc server, but i couldn't find anything like that, so i made my own
