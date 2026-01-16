@@ -43,6 +43,8 @@ Select: misc up         # update vnctui to sync with github
 # Contributing
 when contributing, don't touch the build number, it's supposed to be changed by the build process whenever it's built, either unstably, or stabily, the build number should never go down, as it is what vnctui uses to make sure it can be installed
 
+Don't Move /info/b.loc, for most update compatibility, vnctui checks this to find the binary of the final stable built version, if you move it, it will break updating from older versions
+
 other than that go wild, if i don't understand something, or why a feature is needed, i will probably deny it, but this could still use a lot of work
 
 # End
@@ -51,5 +53,6 @@ this is my first time making any form of public open source non game, so contrib
 # Post-End
 ## Why Did I Make This
 I Made this because i've been working on my server when i don't have access to my computer, and i really like tiling window managers, but for something i wanted to work on, i needed a stacking window manager, so i wanted a way to choose what wm i use when i start the vnc server, but i couldn't find anything like that, so i made my own
+
 
 
