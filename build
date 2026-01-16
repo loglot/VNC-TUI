@@ -1,31 +1,69 @@
-bp=built/vnc.sh
+bp=built/vnc.tmp.sh
 vta(){ #vnc tui add
     echo "$1"
     cat $1 >> $bp
 }
 vti(){ #vnc tui init
-    echo "$1"
-    cat $1 > $bp
+    echo "Adding Build Information"
+    echo "build=$buildnum" > $bp
+    echo "curbuild=$buildnum" >> $bp
 }
 vtm(){ #vnc tui chmod
     echo "+x $1"
     chmod +x $1
 
 }
+vtbn(){ #vnc tui build number
+    echo "echo $buildnum > $1.b"
+    echo $buildnum > $1.b
+    
+}
+while getopts "csnh" opt; do
+    case ${opt} in
+    s) echo Building Stable Version
+        bp=built/vnc.sh
+        echo
+    ;;
+    n) echo Not Building
+        nobuild="y"
+        echo
+    ;;
+    h) echo "Not Building; Showing Help"
+        echo
+        echo "USAGE: ./build -[csnh]"
+        echo
+        echo "s: Build Stable Version That Can Be Uploaded"
+        echo "n: Don't Build"
+        echo "h: Show This Help"
+        nobuild="y"
+        echo
+    ;;
+    esac 
+done
 
-vti src/menus/default
-vta src/menus/misc
-vta src/menus/vnc
-vta src/menus/managers
-echo
-vta src/utilities/config
-vta src/utilities/download
-vta src/utilities/header
-vta src/utilities/installation
-vta src/utilities/manedit
-vta src/utilities/startvnc
-echo
-vta src/run
-echo
-vtm $bp
-echo
+if [ "$nobuild" = "y" ]; then
+    echo
+else
+    buildnum=$(($(cat ./build.number) + 1))
+    echo $buildnum > ./build.number
+    vti 
+    echo
+    vta src/menus/default
+    vta src/menus/misc
+    vta src/menus/vnc
+    vta src/menus/managers
+    echo
+    vta src/utilities/config
+    vta src/utilities/download
+    vta src/utilities/header
+    vta src/utilities/installation
+    vta src/utilities/manedit
+    vta src/utilities/startvnc
+    echo
+    vta src/run
+    echo
+    vtm $bp
+    echo
+    echo "BUILD #$buildnum"
+    echo
+fi

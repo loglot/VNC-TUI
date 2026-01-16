@@ -1,3 +1,5 @@
+build=37
+curbuild=37
 
 
 
@@ -255,42 +257,51 @@ manager=$(cat ~/.config/vnctui/current)
 function download(){
 	echo
 	echo
-	echo "git clone https://github.com/loglot/VNC-TUI.git"
+	echo "git clone https://github.com/loglot/VNC-TUI.git" ./VNCTUID
 	echo
-	git clone https://github.com/loglot/VNC-TUI.git
-	echo
-	if [ "$0" = "/usr/bin/vnctui" ]; then
-		echo "sudo rm $0"
-		sudo rm $0
-		echo
-		echo "sudo cp ./VNC-TUI/built/vnc.sh $0"
-		sudo cp ./VNC-TUI/built/vnc.sh $0
-		echo
-	else
-		echo "rm $0"
-		rm $0
-		echo
-		echo "cp ./VNC-TUI/built/vnc.sh $0"
-		cp ./VNC-TUI/built/vnc.sh $0
-		echo
-		if [ -e /usr/bin/vnctui ]; then
-			echo "sudo rm /usr/bin/vnctui"
-			sudo rm /usr/bin/vnctui
-			echo
-			echo "sudo cp ./VNC-TUI/built/vnc.sh /usr/bin/vnctui"
-			sudo cp ./VNC-TUI/built/vnc.sh /usr/bin/vnctui
-			echo
-		else
-			echo "not installing globaly, as it isn't currently installed globally"
-			echo
-		fi
-	fi
-	echo "yes | rm -r VNC-TUI"
-	yes | rm -r VNC-TUI
+	# git clone https://github.com/loglot/VNC-TUI.git ./VNCTUID
+
+    otherbuild=$(head -n 1 ./VNCTUID/built/vnc.sh)
+    eval $otherbuild
+    if [ "$build" -lt "$curbuild" ]; then
+        echo "INFO: Already Up To Date, Not Installing"
+        echo
+    else
+        if [ "$0" = "/usr/bin/vnctui" ]; then
+            echo "sudo rm $0"
+            sudo rm $0
+            echo
+            echo "sudo cp ./VNCTUID/built/vnc.sh $0"
+            sudo cp ./VNCTUID/built/vnc.sh $0
+            echo
+        else
+            echo "rm $0"
+            rm $0
+            echo
+            echo "cp ./VNCTUID/built/vnc.sh $0"
+            cp ./VNCTUID/built/vnc.sh $0
+            echo
+            if [ -e /usr/bin/vnctui ]; then
+                echo "sudo rm /usr/bin/vnctui"
+                sudo rm /usr/bin/vnctui
+                echo
+                echo "sudo cp ./VNCTUID/built/vnc.sh /usr/bin/vnctui"
+                sudo cp ./VNCTUID/built/vnc.sh /usr/bin/vnctui
+                echo
+            else
+                echo "not installing globaly, as it isn't currently installed globally"
+                echo
+            fi
+        fi
+    fi
+	echo "yes | rm -r VNCTUID"
+	# yes | rm -r VNCTUID
 	echo
 	echo "done"
 	echo "restart $0 for changes to take effect"
 	echo
+    echo "$curbuild >> $build"
+    echo
 	read -p ": "
 }
 
@@ -308,6 +319,8 @@ function header(){
 	fi
 	echo "Existing Managers: $list"
 	echo
+    echo "Build $curbuild"
+    echo
 	echo "---------------------------------------------"
 	echo
 }

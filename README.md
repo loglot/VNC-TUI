@@ -4,10 +4,19 @@ as i don't see any others currently existing
 this is made to be a decent tui for remote clients when you have multiple desktop environments / window managers
 
 # INSTALLATION
-run
+## Download
 ```sh
 git clone https://github.com/loglot/VNC-TUI.git
+```
+## Run Stable Binary
+```sh
 ./VNC-TUI/built/vnc.sh
+```
+## to Build From Source and Run;
+```sh
+cd VNC-TUI
+./build
+./built/vnc.tmp.sh
 ```
 this will prompt you to make the config folder, and will also prompt global installation if it isn't, if you do the global installation, you can run `vnctui` to open it
 
