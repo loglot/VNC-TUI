@@ -1,5 +1,5 @@
-build=39
-curbuild=39
+build=43
+curbuild=43
 
 
 
@@ -260,10 +260,10 @@ function download(){
 	echo "git clone https://github.com/loglot/VNC-TUI.git" ./VNCTUID
 	echo
 	git clone https://github.com/loglot/VNC-TUI.git ./VNCTUID
-
+    echo
     otherbuild=$(head -n 1 ./VNCTUID/built/vnc.sh)
     eval $otherbuild
-    if [ "$build" -lt "$curbuild" ]; then
+    if [ "$curbuild" -gt "$build" ]; then
         echo "INFO: Already Up To Date, Not Installing"
         echo
     else
