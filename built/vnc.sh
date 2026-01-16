@@ -1,5 +1,5 @@
-build=51
-curbuild=51
+build=55
+curbuild=55
 
 
 
@@ -266,9 +266,33 @@ function download(){
     otherbuild=$(head -n 1 ./VNCTUID/$bp)
     eval $otherbuild
     if [ "$curbuild" -ge "$build" ]; then
-        echo "INFO: Already Up To Date, Not Installing"
-        echo
+        echo "INFO: Already Up To Date, Install Anyways?"
+        echo "current: $curbuild - remote: $build"
     else
+        echo "current: $curbuild - remote: $build"
+    fi
+    echo 
+    
+    down
+
+	echo "yes | rm -r VNCTUID"
+	yes | rm -r VNCTUID
+	echo
+	echo "done"
+	echo "restart $0 for changes to take effect"
+	echo
+    if [ "$inst" = "y" -o "$inst" = "Y" ]; then
+        echo "$curbuild >> $build"
+    else
+        echo "$curbuild || $build"
+    fi
+    echo
+	read -p ": "
+}
+function down(){
+
+    read -p "install? [y/n]: " inst
+    if [ "$inst" = "y" -o "$inst" = "Y" ]; then
         if [ "$0" = "/usr/bin/vnctui" ]; then
             echo "sudo rm $0"
             sudo rm $0
@@ -295,18 +319,17 @@ function download(){
                 echo
             fi
         fi
+    elif [ "$inst" = "n" -o "$inst" = "N" ]; then
+        echo
+        echo Understood.
+        echo
+    else
+        echo
+        echo not a response.
+        echo
+        down
     fi
-	echo "yes | rm -r VNCTUID"
-	yes | rm -r VNCTUID
-	echo
-	echo "done"
-	echo "restart $0 for changes to take effect"
-	echo
-    echo "$curbuild >> $build"
-    echo
-	read -p ": "
 }
-
 
 
 function header(){
