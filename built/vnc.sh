@@ -1,5 +1,5 @@
-build=43
-curbuild=43
+build=44
+curbuild=44
 
 
 
@@ -263,7 +263,7 @@ function download(){
     echo
     otherbuild=$(head -n 1 ./VNCTUID/built/vnc.sh)
     eval $otherbuild
-    if [ "$curbuild" -gt "$build" ]; then
+    if [ "$curbuild" -ge "$build" ]; then
         echo "INFO: Already Up To Date, Not Installing"
         echo
     else
