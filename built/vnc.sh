@@ -1,5 +1,5 @@
-build=37
-curbuild=37
+build=39
+curbuild=39
 
 
 
@@ -259,7 +259,7 @@ function download(){
 	echo
 	echo "git clone https://github.com/loglot/VNC-TUI.git" ./VNCTUID
 	echo
-	# git clone https://github.com/loglot/VNC-TUI.git ./VNCTUID
+	git clone https://github.com/loglot/VNC-TUI.git ./VNCTUID
 
     otherbuild=$(head -n 1 ./VNCTUID/built/vnc.sh)
     eval $otherbuild
@@ -295,7 +295,7 @@ function download(){
         fi
     fi
 	echo "yes | rm -r VNCTUID"
-	# yes | rm -r VNCTUID
+	yes | rm -r VNCTUID
 	echo
 	echo "done"
 	echo "restart $0 for changes to take effect"
